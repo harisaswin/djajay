@@ -1,623 +1,234 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Static UI</title>
+  <style>
+    /* CSS Variables & Global Resets */
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --accent: #6366f1;
+      --accent-glow: #818cf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+    }
 
-    <title>MarketX — Buy. Sell. Discover.</title>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
 
-    <link rel="stylesheet" href="style.css">
+    /* Ambient Background Glow */
+    .glow-bg {
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Header & Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--text-main);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* Interactive Button */
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+
+    /* Card Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: left;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      color: var(--text-main);
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- ================= NAVBAR ================= -->
+  <div class="glow-bg"></div>
 
-<header class="navbar">
-
-    <a href="#" class="logo">
-        market<span>x</span>
-    </a>
-
-    <nav class="nav-links">
-        <a href="#explore">Explore</a>
-        <a href="#categories">Categories</a>
-        <a href="#trending">Trending</a>
+  <header>
+    <div class="logo">Static<span>UI</span></div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
     </nav>
-
-    <div class="nav-right">
-
-        <button class="location-btn">
-            <span>⌖</span>
-            Chennai
-            <span class="chevron">⌄</span>
-        </button>
-
-        <button class="nav-icon">
-            ♡
-        </button>
-
-        <button class="nav-icon">
-            ♧
-        </button>
-
-        <button class="account-btn">
-            <span class="avatar">A</span>
-            <span class="account-text">Account</span>
-        </button>
-
-        <button class="sell-btn">
-            <span>＋</span>
-            Sell
-        </button>
-
-    </div>
-
-    <button class="mobile-menu" id="mobileMenu">
-        ☰
-    </button>
-
-</header>
-
-
-<!-- ================= HERO ================= -->
-
-<section class="hero" id="explore">
-
-    <div class="hero-glow glow-one"></div>
-    <div class="hero-glow glow-two"></div>
-
-    <div class="hero-content">
-
-        <div class="hero-badge">
-            <span class="live-dot"></span>
-            Marketplace of the future
-        </div>
-
-        <h1>
-            Find what
-            <br>
-            <span>moves you.</span>
-        </h1>
-
-        <p class="hero-text">
-            Discover amazing products from people around you.
-            Buy smarter. Sell faster. Keep it moving.
-        </p>
-
-        <div class="main-search">
-
-            <div class="search-input">
-                <span>⌕</span>
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search cars, phones, furniture..."
-                >
-            </div>
-
-            <button id="searchButton">
-                Search
-                <span>→</span>
-            </button>
-
-        </div>
-
-        <div class="popular-searches">
-
-            <span>Popular:</span>
-
-            <button>iPhone</button>
-            <button>Cars</button>
-            <button>Gaming PC</button>
-            <button>Sneakers</button>
-
-        </div>
-
-        <div class="stats">
-
-            <div>
-                <strong>2.4M+</strong>
-                <span>Listings</span>
-            </div>
-
-            <div>
-                <strong>850K+</strong>
-                <span>Sellers</span>
-            </div>
-
-            <div>
-                <strong>12K+</strong>
-                <span>Cities</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- HERO VISUAL -->
-
-    <div class="hero-visual">
-
-        <div class="visual-circle"></div>
-
-        <div class="floating-product product-main">
-
-            <div class="visual-image image-phone"></div>
-
-            <div class="visual-info">
-                <span>Featured</span>
-                <strong>iPhone 15 Pro</strong>
-                <b>₹72,000</b>
-            </div>
-
-            <button class="mini-heart">♡</button>
-
-        </div>
-
-
-        <div class="floating-product product-small">
-
-            <div class="small-icon">🚗</div>
-
-            <div>
-                <strong>BMW 3 Series</strong>
-                <span>₹32.5L</span>
-            </div>
-
-        </div>
-
-
-        <div class="floating-tag">
-            <span>✓</span>
-            Verified seller
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= CATEGORIES ================= -->
-
-<section class="categories-section" id="categories">
-
-    <div class="section-top">
-
-        <div>
-            <span class="eyebrow">EXPLORE</span>
-
-            <h2>Browse categories</h2>
-        </div>
-
-        <button class="text-button">
-            View all →
-        </button>
-
-    </div>
-
-
-    <div class="category-grid">
-
-        <button class="category-card category-orange">
-            <div class="category-icon">🚗</div>
-            <div>
-                <strong>Vehicles</strong>
-                <span>124K listings</span>
-            </div>
-            <b>→</b>
-        </button>
-
-        <button class="category-card category-purple">
-            <div class="category-icon">📱</div>
-            <div>
-                <strong>Mobiles</strong>
-                <span>318K listings</span>
-            </div>
-            <b>→</b>
-        </button>
-
-        <button class="category-card category-blue">
-            <div class="category-icon">💻</div>
-            <div>
-                <strong>Electronics</strong>
-                <span>205K listings</span>
-            </div>
-            <b>→</b>
-        </button>
-
-        <button class="category-card category-green">
-            <div class="category-icon">🏠</div>
-            <div>
-                <strong>Property</strong>
-                <span>87K listings</span>
-            </div>
-            <b>→</b>
-        </button>
-
-        <button class="category-card category-pink">
-            <div class="category-icon">👟</div>
-            <div>
-                <strong>Fashion</strong>
-                <span>156K listings</span>
-            </div>
-            <b>→</b>
-        </button>
-
-        <button class="category-card category-yellow">
-            <div class="category-icon">🎮</div>
-            <div>
-                <strong>Gaming</strong>
-                <span>94K listings</span>
-            </div>
-            <b>→</b>
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ================= TRENDING ================= -->
-
-<section class="listings-section" id="trending">
-
-    <div class="section-top">
-
-        <div>
-            <span class="eyebrow">NEAR YOU</span>
-
-            <h2>Trending right now</h2>
-        </div>
-
-        <button class="filter-button">
-            ☷ Filters
-        </button>
-
-    </div>
-
-
-    <div class="listing-grid">
-
-
-        <!-- LISTING 1 -->
-
-        <article class="listing-card">
-
-            <div class="listing-image image-iphone">
-
-                <span class="listing-badge">
-                    Featured
-                </span>
-
-                <button class="favorite">
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="listing-content">
-
-                <div class="listing-price">
-                    ₹72,000
-                </div>
-
-                <h3>iPhone 15 Pro</h3>
-
-                <p>256GB · Natural Titanium · Like New</p>
-
-                <div class="listing-bottom">
-                    <span>Chennai</span>
-                    <span>2h ago</span>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- LISTING 2 -->
-
-        <article class="listing-card">
-
-            <div class="listing-image image-bike">
-
-                <span class="listing-badge">
-                    Popular
-                </span>
-
-                <button class="favorite">
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="listing-content">
-
-                <div class="listing-price">
-                    ₹1,65,000
-                </div>
-
-                <h3>Royal Enfield Classic 350</h3>
-
-                <p>2022 · 18,000 km · Petrol</p>
-
-                <div class="listing-bottom">
-                    <span>Madurai</span>
-                    <span>5h ago</span>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- LISTING 3 -->
-
-        <article class="listing-card">
-
-            <div class="listing-image image-laptop">
-
-                <button class="favorite">
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="listing-content">
-
-                <div class="listing-price">
-                    ₹78,500
-                </div>
-
-                <h3>ASUS ROG Gaming Laptop</h3>
-
-                <p>RTX 4060 · 16GB RAM · 1TB SSD</p>
-
-                <div class="listing-bottom">
-                    <span>Chennai</span>
-                    <span>8h ago</span>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- LISTING 4 -->
-
-        <article class="listing-card">
-
-            <div class="listing-image image-sneakers">
-
-                <span class="listing-badge">
-                    New
-                </span>
-
-                <button class="favorite">
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="listing-content">
-
-                <div class="listing-price">
-                    ₹12,500
-                </div>
-
-                <h3>Nike Air Jordan 1</h3>
-
-                <p>Size 9 · Brand New · Original</p>
-
-                <div class="listing-bottom">
-                    <span>Bangalore</span>
-                    <span>1d ago</span>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- LISTING 5 -->
-
-        <article class="listing-card">
-
-            <div class="listing-image image-camera">
-
-                <button class="favorite">
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="listing-content">
-
-                <div class="listing-price">
-                    ₹85,000
-                </div>
-
-                <h3>Sony A7 III</h3>
-
-                <p>24MP · 4K · Mirrorless Camera</p>
-
-                <div class="listing-bottom">
-                    <span>Coimbatore</span>
-                    <span>1d ago</span>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- LISTING 6 -->
-
-        <article class="listing-card">
-
-            <div class="listing-image image-sofa">
-
-                <button class="favorite">
-                    ♡
-                </button>
-
-            </div>
-
-            <div class="listing-content">
-
-                <div class="listing-price">
-                    ₹18,500
-                </div>
-
-                <h3>Modern 5-Seater Sofa</h3>
-
-                <p>Premium Fabric · Excellent Condition</p>
-
-                <div class="listing-bottom">
-                    <span>Chennai</span>
-                    <span>2d ago</span>
-                </div>
-
-            </div>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- ================= SELL CTA ================= -->
-
-<section class="sell-section">
-
-    <div class="sell-content">
-
-        <span class="eyebrow">SELL WITH MARKETX</span>
-
-        <h2>
-            Your unused stuff
-            <br>
-            could be someone's <span>next favorite.</span>
-        </h2>
-
-        <p>
-            Turn the things you don't need into extra cash.
-            Listing an item takes less than a minute.
-        </p>
-
-        <button class="large-sell">
-            ＋ Post an item
-            <span>→</span>
-        </button>
-
-    </div>
-
-    <div class="sell-decoration">
-
-        <div class="decoration-card card-a">
-            <span>🎧</span>
-            <strong>AirPods Pro</strong>
-            <b>₹16,500</b>
-        </div>
-
-        <div class="decoration-card card-b">
-            <span>⌚</span>
-            <strong>Apple Watch</strong>
-            <b>₹28,000</b>
-        </div>
-
-        <div class="decoration-circle"></div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <div class="footer-main">
-
-        <div class="footer-brand">
-
-            <div class="logo">
-                market<span>x</span>
-            </div>
-
-            <p>
-                Buy better. Sell smarter.
-                <br>
-                Keep the world moving.
-            </p>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>Marketplace</strong>
-
-            <a href="#">Browse</a>
-            <a href="#">Categories</a>
-            <a href="#">Sell an item</a>
-            <a href="#">Favorites</a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>Company</strong>
-
-            <a href="#">About us</a>
-            <a href="#">Safety</a>
-            <a href="#">Careers</a>
-            <a href="#">Contact</a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>Support</strong>
-
-            <a href="#">Help center</a>
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-            <a href="#">Community</a>
-
-        </div>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-        <span>© 2026 MarketX</span>
-
-        <span>Made for people who love good finds.</span>
-
-        <div>
-            Instagram · X · YouTube
-        </div>
-
-    </div>
-
-</footer>
-
-
-<script src="script.js"></script>
-
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Build <span>Smarter</span> Static Sites</h1>
+      <p>Clean glassmorphism design paired with modern styling variables and smooth interactive UI elements.</p>
+      <button class="btn" id="actionBtn">Trigger Action</button>
+    </section>
+
+    <section class="grid" id="features">
+      <div class="card">
+        <h3>Glassmorphism</h3>
+        <p>Uses modern CSS `backdrop-filter` and semi-transparent layers for a subtle, high-end feel.</p>
+      </div>
+      <div class="card">
+        <h3>Fully Responsive</h3>
+        <p>Built-in CSS Grid adaptively restructures content across desktop, tablet, and mobile displays seamlessly.</p>
+      </div>
+      <div class="card">
+        <h3>Zero Dependencies</h3>
+        <p>Lightweight and fast. Runs entirely on native CSS and vanilla JavaScript without external frameworks.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">✨ Action triggered successfully!</div>
+
+  <script>
+    // JS Interaction logic
+    const btn = document.getElementById('actionBtn');
+    const toast = document.getElementById('toast');
+
+    btn.addEventListener('click', () => {
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
-```
