@@ -1,1 +1,459 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MarketX - Buy & Sell</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <div class="logo">
+            Market<span>X</span>
+        </div>
+
+        <div class="location">
+            📍 <span>Chennai</span>
+            <span class="arrow">⌄</span>
+        </div>
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for products, cars, phones and more..."
+            >
+            <button onclick="searchProducts()">🔍</button>
+        </div>
+
+        <div class="nav-actions">
+            <button class="icon-btn">♡</button>
+            <button class="icon-btn">💬</button>
+
+            <button class="profile-btn">
+                👤
+                <span>Account</span>
+            </button>
+
+            <button class="sell-btn">
+                + SELL
+            </button>
+        </div>
+
+    </header>
+
+
+    <!-- CATEGORIES -->
+    <section class="categories">
+
+        <div class="category-title">
+            Browse Categories
+        </div>
+
+        <div class="category-list">
+
+            <div class="category" onclick="filterCategory('Cars')">
+                <div class="category-icon">🚗</div>
+                <span>Cars</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Mobiles')">
+                <div class="category-icon">📱</div>
+                <span>Mobiles</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Electronics')">
+                <div class="category-icon">💻</div>
+                <span>Electronics</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Furniture')">
+                <div class="category-icon">🛋️</div>
+                <span>Furniture</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Fashion')">
+                <div class="category-icon">👕</div>
+                <span>Fashion</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Properties')">
+                <div class="category-icon">🏠</div>
+                <span>Properties</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Jobs')">
+                <div class="category-icon">💼</div>
+                <span>Jobs</span>
+            </div>
+
+            <div class="category" onclick="filterCategory('Others')">
+                <div class="category-icon">•••</div>
+                <span>Others</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="small-heading">
+                THE SMARTER MARKETPLACE
+            </p>
+
+            <h1>
+                Find it.<br>
+                <span>Buy it.</span> Sell it.
+            </h1>
+
+            <p class="hero-description">
+                Discover great deals from people around you.
+                Sell things you no longer need.
+            </p>
+
+            <div class="hero-search">
+
+                <input
+                    type="text"
+                    id="heroSearch"
+                    placeholder="What are you looking for?"
+                >
+
+                <button onclick="heroSearch()">
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="hero-shape">
+            <div class="floating-card card-one">
+                📱
+                <div>
+                    <strong>iPhone 14 Pro</strong>
+                    <small>₹45,000</small>
+                </div>
+            </div>
+
+            <div class="floating-card card-two">
+                🚗
+                <div>
+                    <strong>BMW 3 Series</strong>
+                    <small>₹32,00,000</small>
+                </div>
+            </div>
+
+            <div class="hero-circle">
+                🛍️
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+    <main class="products-section">
+
+        <div class="section-header">
+
+            <div>
+                <p class="section-label">
+                    EXPLORE
+                </p>
+
+                <h2>
+                    Fresh Recommendations
+                </h2>
+            </div>
+
+            <button class="view-all" onclick="showAll()">
+                View All →
+            </button>
+
+        </div>
+
+
+        <div id="productsGrid" class="products-grid">
+
+            <!-- PRODUCT 1 -->
+            <article class="product-card">
+
+                <div class="product-image phone">
+                    📱
+
+                    <button class="heart">
+                        ♡
+                    </button>
+
+                    <span class="condition">
+                        LIKE NEW
+                    </span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>iPhone 14 Pro</h3>
+
+                    <div class="price">
+                        ₹45,000
+                    </div>
+
+                    <p>
+                        128GB • Deep Purple
+                    </p>
+
+                    <div class="product-location">
+                        Chennai · 2 days ago
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 2 -->
+            <article class="product-card">
+
+                <div class="product-image car">
+                    🚗
+
+                    <button class="heart">
+                        ♡
+                    </button>
+
+                    <span class="condition">
+                        GOOD
+                    </span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>Royal Enfield Classic 350</h3>
+
+                    <div class="price">
+                        ₹1,65,000
+                    </div>
+
+                    <p>
+                        2022 • 18,000 km
+                    </p>
+
+                    <div class="product-location">
+                        Madurai · 1 day ago
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 3 -->
+            <article class="product-card">
+
+                <div class="product-image laptop">
+                    💻
+
+                    <button class="heart">
+                        ♡
+                    </button>
+
+                    <span class="condition">
+                        LIKE NEW
+                    </span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>Gaming Laptop</h3>
+
+                    <div class="price">
+                        ₹72,000
+                    </div>
+
+                    <p>
+                        RTX 4060 • 16GB RAM
+                    </p>
+
+                    <div class="product-location">
+                        Coimbatore · 3 hours ago
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 4 -->
+            <article class="product-card">
+
+                <div class="product-image furniture">
+                    🛋️
+
+                    <button class="heart">
+                        ♡
+                    </button>
+
+                    <span class="condition">
+                        GOOD
+                    </span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>Modern Sofa Set</h3>
+
+                    <div class="price">
+                        ₹18,500
+                    </div>
+
+                    <p>
+                        5 Seater • Fabric
+                    </p>
+
+                    <div class="product-location">
+                        Chennai · 5 hours ago
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 5 -->
+            <article class="product-card">
+
+                <div class="product-image watch">
+                    ⌚
+
+                    <button class="heart">
+                        ♡
+                    </button>
+
+                    <span class="condition">
+                        NEW
+                    </span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>Apple Watch Series 9</h3>
+
+                    <div class="price">
+                        ₹32,000
+                    </div>
+
+                    <p>
+                        GPS • 45mm
+                    </p>
+
+                    <div class="product-location">
+                        Chennai · 1 day ago
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 6 -->
+            <article class="product-card">
+
+                <div class="product-image camera">
+                    📷
+
+                    <button class="heart">
+                        ♡
+                    </button>
+
+                    <span class="condition">
+                        GOOD
+                    </span>
+                </div>
+
+                <div class="product-info">
+
+                    <h3>Sony Mirrorless Camera</h3>
+
+                    <div class="price">
+                        ₹85,000
+                    </div>
+
+                    <p>
+                        24MP • 4K Video
+                    </p>
+
+                    <div class="product-location">
+                        Bangalore · 2 days ago
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </main>
+
+
+    <!-- SELL BANNER -->
+    <section class="sell-banner">
+
+        <div>
+            <p>
+                GOT SOMETHING TO SELL?
+            </p>
+
+            <h2>
+                Turn your unused stuff<br>
+                into cash.
+            </h2>
+        </div>
+
+        <button onclick="sellItem()">
+            + SELL AN ITEM
+        </button>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-logo">
+            Market<span>X</span>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Safety</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Help</a>
+        </div>
+
+        <p>
+            © 2026 MarketX. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
 
